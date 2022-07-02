@@ -1,8 +1,8 @@
 {
-  "name": "MalhoStephane_7_2072022",
+  "name": "groupomania",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "nodemon server"
   },
@@ -21,6 +21,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
-    "mongoose": "^6.4.2"
+    "mongoose": "^6.4.2",
+    "validator": "^13.7.0"
   }
 }
