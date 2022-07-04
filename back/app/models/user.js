@@ -61,11 +61,6 @@ const userSchema = new mongoose.Schema(
     },
     isAdmin: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
-    isActive: { type: Boolean, default: false },
-    deletedAt: { type: Date, default: null },
-    isDeleted: { type: Boolean, default: false },
-    isBanned: { type: Boolean, default: false },
-    updated: { type: Date, default: Date.now },
   },
   { timestamps: true }
 );
@@ -77,17 +72,6 @@ userSchema.pre("save",async function (next) {
   next();
 });
 
-userSchema.statics.login = async function(email, password) {
-  const user = await this.findOne({ email });
-  if (user) {
-    const auth = await bcrypt.compare(password,user.password);
-    if (auth) {
-      return user;
-    } 
-    throw new Error("Invalid password");
-  }
-  throw new Error("Invalid email");
-};
 
 // déclaration du model
 const userModel = mongoose.model("User", userSchema);

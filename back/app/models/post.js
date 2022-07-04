@@ -3,9 +3,10 @@ const mongoose = require("mongoose");
 // Define a schema
 const postSchema = new mongoose.Schema(
   {
-    posterID: {
+    userID: {
       type: String,
       required: true,
+      ref: "User",
     },
     message: {
       type: String,
@@ -16,12 +17,16 @@ const postSchema = new mongoose.Schema(
     picture: {
       type: String,
     },
-    video: {
+    like: {
       type: String,
+      required: true,
+      default: 0,
+      ref: "User",
     },
-    likers: {
+    userWhoLiked: {
       type: [String],
       required: true,
+      ref: "User",
     },
   },
   {
