@@ -25,18 +25,35 @@ var corsOptions = {
   origin: "http://localhost:8081"
 };
 app.use(cors(corsOptions));
-// parse requests of content-type
-app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
+// parse requests of content-type
+app.use(express.json());
+
+// user routes
+const router = require("./app/routes/index");
+app.use("/api", router);
+
 
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Response OK." });
-});                                                                             
+});   
 
 // set port, listen for requests
 const PORT = process.env.PORT ;
-app.listen(PORT, () => {
+app.listen(PORT || 3000, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+
+// if error, send 404 status
+app.use((req, res, next) => {
+  res.status(404).send("Sorry can't find that!") 
+}) 
+
+// custom error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack)
+  res.status(500).send('Something broke!')
+})
+

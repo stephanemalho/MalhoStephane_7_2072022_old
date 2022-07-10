@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 // Define a schema
 const postSchema = new mongoose.Schema(
   {
-    userID: {
+    userId: {
       type: String,
       required: true,
       ref: "User",
@@ -34,4 +34,4 @@ const postSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("post", postSchema);
+module.exports = mongoose.model("Post", postSchema);

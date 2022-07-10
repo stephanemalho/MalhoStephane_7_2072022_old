@@ -13,10 +13,10 @@ mongoose // connect to mongoDB and send message to console on success or failure
     ssl: true, // use ssl to connect to mongoDB
   })
   .then(() => {
-    console.log(("connected to database 📡")); // log a success message colored in green
+    console.log("connected to database 📡"); // log a success message colored in green
   })
   .catch((error) => {
-    console.log(("Database connection error: ❌ " + error)); // log a colored error message
+    console.log("Database connection error: ❌ " + error); // log a colored error message
   });
 
   module.exports = mongoose.connection;                                   

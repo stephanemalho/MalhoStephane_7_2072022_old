@@ -1,8 +1,9 @@
 const mongoose = require("mongoose"); // import mongoose
-const { isEmail } = require("validator"); // npm i validator
+const uniqueValidator = require('mongoose-unique-validator');
+
 
 // mise en structure du schema
-const userSchema = new mongoose.Schema(
+const userSchema = mongoose.Schema(
   {
     email: {
       type: String,
@@ -16,48 +17,35 @@ const userSchema = new mongoose.Schema(
       required: true,
       minlength: 8,
       maxlength: 255,
-      validate: [ isEmail , "Email invalide" ],
     },
-    pseudo: {
-      type: String,
-      required: true,
-      minlength: 2,
-      maxlength: 20,
-      trim: true,
-      unique: true,
-      index: true,
-      default: "Anonyme",
-    },
-    name: { type: String },
-    nested: {
-      firstName: { type: String },
-      lastName: { type: String },
-    },
-    job: { 
-      type: String,
-      enum: ["Nouveau membre","Developpeur", "Chargé de clientèle","Courtier","Guichetier", "Chargé des ressources humaines","Directeur","","other","Télé vendeur"],
-      default: "Nouveau membre",
+    username: {
+      firstname: {
+        type: [String],
+        required: true,
+        minlength: 2,
+        maxlength: 20,
+        trim: true,
+      },
+      lastname: {
+        type: [String],
+        required: true,
+        minlength: 2,
+        maxlength: 20,
+        trim: true,
+      },
     },
     age: { type: Number },
     avatar: {
       type: String,
       default: "../assets/images/avatar.png",
     },
-    description: {
-      type: String,
-      default: "",
-      maxlength: 255,
-      trim: true,
-    },
     followers: {
       type: [String],
+      ref: "User",
     },
     following: {
       type: [String],
-    },
-    likes: {
-      type: Number,
-      default: 0,
+      ref: "User",
     },
     isAdmin: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
@@ -65,15 +53,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// déclaration du model de cryptage du mot de passe
-userSchema.pre("save",async function (next) {
-  const salt = await bcrypt.genSalt(10); //salage du mot de passe
-  this.password = await bcrypt.hash(this.password, salt); // générer le hash du mot de passe
-  next();
-});
+userSchema.plugin(uniqueValidator, {message: 'Éxiste déja.'});
 
-
-// déclaration du model
-const userModel = mongoose.model("User", userSchema);
-// export du model
-module.exports = userModel;
+module.exports = mongoose.model('User', userSchema);

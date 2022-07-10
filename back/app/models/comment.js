@@ -4,22 +4,17 @@ const mongoose = require("mongoose");
 const commentSchema = new mongoose.Schema({
   comment: {
     type: String,
-    required: false,
+    required: true,
     default: "Ajouter un commentaire", // valeur par defaut
     trim: true,
     maxlength: [140, "Comment is too long"],
-    ref: "User", 
   },
-  commenterID: [{
-    pseudo: { type: String, required: true }, // pseudo de la personne qui commente
-    avatar: { type: String, required: true }, // avatar de l'utilisateur qui a commenté afiché en petit
-    createdAt: { type: Date, required: true }, // date de création du commentaire
-    isAdmin: { type: Boolean, required: true }, // si l'utilisateur est admin ou non
-    isModified: { type: Boolean, required: true }, // si le commentaire a été modifié
-    isDeleted: { type: Boolean, required: true }, // si le commentaire a été supprimé
-    ref: "User", // reference vers l'utilisateur qui a commenté
-  }],
-  postID: {
+  userId: [
+    {
+      ref: "User", // reference vers l'utilisateur qui a commenté
+    },
+  ],
+  postId: {
     type: String, // id du post
     required: true,
     ref: "Post",
@@ -29,9 +24,8 @@ const commentSchema = new mongoose.Schema({
     default: 0,
     ref: "User",
   },
-  userDislikes: {
-    type: Number,
-    default: 0,
+  userWhoLiked: {
+    type: [String],
     ref: "User",
   },
   createdAt: {
